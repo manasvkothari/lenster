@@ -4,9 +4,53 @@ include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Secret-Detection.gitlab-ci.yml
 
+cache:
+  paths:
+    - node_modules/
+    - .next/cache/
+
 stages:
   - test
+  - build
   - clean
+
+before_script:
+  - node -v
+  - yarn -v
+  - cp .env.example .env
+  - yarn install --frozen-lockfile --silent
+
+sast:
+  stage: test
+  before_script: []
+  variables:
+    SAST_EXCLUDED_PATHS: node_modules
+
+lint:
+  stage: build
+  script:
+    - yarn lint
+
+prettier:
+  stage: build
+  script:
+    - yarn prettier:check
+
+codegen:
+  stage: build
+  script:
+    - yarn codegen
+
+build:
+  stage: test
+  script:
+    - yarn build
+
+typecheck:
+  stage: build
+  script:
+    - yarn generate
+    - yarn typecheck
 
 housekeeping:
   stage: clean
@@ -16,7 +60,10 @@ housekeeping:
   only:
     - main
 
-sast:
-  stage: test
-  variables:
-    SAST_EXCLUDED_PATHS: node_modules
+clean-branches:
+  stage: clean
+  before_script: []
+  script:
+    - curl --request DELETE --header "PRIVATE-TOKEN:$ACCESS_TOKEN" https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/repository/merged_branches
+  only:
+    - main
