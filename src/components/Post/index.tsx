@@ -108,7 +108,7 @@ const ViewPost: NextPage = () => {
       />
       <GridItemEight className="space-y-5">
         <Card>
-          <SinglePost post={post} showThread />
+          <SinglePost post={post} hideThread hideStats={false} />
         </Card>
         <Feed
           post={post}

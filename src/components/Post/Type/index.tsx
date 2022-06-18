@@ -10,10 +10,10 @@ import Mirrored from './Mirrored'
 interface Props {
   post: LensterPost
   hideType?: boolean
-  showThread?: boolean
+  hideThread?: boolean
 }
 
-const PostType: FC<Props> = ({ post, hideType, showThread }) => {
+const PostType: FC<Props> = ({ post, hideType, hideThread = false }) => {
   const { pathname } = useRouter()
   const type = post?.__typename
   const postType = post?.metadata?.attributes[0]?.value
@@ -24,7 +24,7 @@ const PostType: FC<Props> = ({ post, hideType, showThread }) => {
       {type === 'Mirror' && <Mirrored post={post} />}
       {type === 'Comment' &&
         !hideType &&
-        !showThread &&
+        !hideThread &&
         !isCollected &&
         postType !== 'community post' && <Commented post={post} />}
       {postType === 'community post' &&

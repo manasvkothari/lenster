@@ -8,6 +8,7 @@ import React, { FC } from 'react'
 import PostActions from './Actions'
 import HiddenPost from './HiddenPost'
 import PostBody from './PostBody'
+import PostStats from './PostStats'
 import PostType from './Type'
 
 dayjs.extend(relativeTime)
@@ -15,19 +16,21 @@ dayjs.extend(relativeTime)
 interface Props {
   post: LensterPost
   hideType?: boolean
-  showThread?: boolean
+  hideThread?: boolean
+  hideStats?: boolean
 }
 
 const SinglePost: FC<Props> = ({
   post,
   hideType = false,
-  showThread = false
+  hideThread = false,
+  hideStats = true
 }) => {
   const postType = post?.metadata?.attributes[0]?.value
 
   return (
     <div className="p-5">
-      <PostType post={post} hideType={hideType} showThread={showThread} />
+      <PostType post={post} hideType={hideType} hideThread={hideThread} />
       <div>
         <div className="flex justify-between pb-4 space-x-1.5">
           <UserProfile
@@ -54,6 +57,7 @@ const SinglePost: FC<Props> = ({
           ) : (
             <>
               <PostBody post={post} />
+              {!hideStats && <PostStats post={post} />}
               <PostActions post={post} />
             </>
           )}
