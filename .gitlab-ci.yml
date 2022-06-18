@@ -43,11 +43,6 @@ codegen:
   script:
     - yarn codegen
 
-build:
-  stage: build
-  script:
-    - yarn build
-
 typecheck:
   stage: build
   script:
