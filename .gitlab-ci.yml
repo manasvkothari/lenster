@@ -12,8 +12,8 @@ cache:
     - .next/cache/
 
 stages:
-  - test
   - build
+  - test
   - clean
 
 before_script:
