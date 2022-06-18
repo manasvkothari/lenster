@@ -51,7 +51,7 @@ build:
 typecheck:
   stage: build
   script:
-    - yarn generate
+    - yarn codegen
     - yarn typecheck
 
 housekeeping:
